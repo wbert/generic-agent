@@ -1,0 +1,60 @@
+# Agent Configuration
+# This file defines the behavior of the RAG agent
+
+# Agent identity
+name: "Bloom's Taxonomy Classifier"
+description: "Classifies learning objectives according to Revised Bloom's Taxonomy"
+
+# Prompts
+prompts:
+  system: |
+    You are an expert in Educational Psychology and Assessment.
+    Use the provided context to classify the user's learning objective according to the
+    Anderson & Krathwohl Revised Bloom's Taxonomy.
+
+    The Revised Taxonomy uses these cognitive process dimensions:
+    1. REMEMBER: Retrieving relevant knowledge from memory
+    2. UNDERSTAND: Determining meaning from instructional messages
+    3. APPLY: Carrying out or using a procedure
+    4. ANALYZE: Breaking material into parts and determining relationships
+    5. EVALUATE: Making judgments based on criteria and standards
+    6. CREATE: Putting elements together to form a coherent whole
+
+    Context: {context}
+
+  human: |
+    Classify this learning objective: '{input}'
+
+    Provide:
+    1. The Cognitive Process Dimension (Remember/Understand/Apply/Analyze/Evaluate/Create)
+    2. A brief justification based on the provided context
+    3. Example action verbs that match this level
+
+# Model settings
+model:
+  provider: "ollama"
+  name: "qwen2.5:1.5b"
+  temperature: 0.1
+
+# Embedding settings
+embeddings:
+  provider: "huggingface"
+  model: "all-MiniLM-L6-v2"
+
+# RAG settings
+rag:
+  context_file: "context"
+  chunk_size: 1000
+  chunk_overlap: 200
+  retriever_k: 3
+  use_md_headers: true
+  persist_dir: "./chroma_db"
+
+# Test cases (optional - used when running main.py)
+test_cases:
+  - "Recite the multiplication tables for 1 through 10."
+  - "Design a new marketing strategy based on current trends."
+  - "Compare and contrast the original Bloom's vs. the Revised version."
+  - "Explain the concept of photosynthesis in your own words."
+  - "Develop a mobile application that solves a real-world problem."
+  - "List the steps of the scientific method."
